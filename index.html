@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Diagnóstico ICP 360º — ALTUM</title>
+<meta name="description" content="Meça a maturidade do seu ICP nas 5 Engrenagens e descubra quanto o cliente errado está custando ao seu crescimento.">
+<style>
+  /* ============ ALTUM DESIGN TOKENS ============ */
+  :root{
+    --navy:#0A1628;
+    --navy-deep:#060e1c;
+    --gold:#B8922A;
+    --gold-dark:#8A6E1E;
+    --cream:#F5F0E8;
+    --stone:#6B6359;
+    --cream-line:rgba(245,240,232,.14);
+    --navy-line:rgba(10,22,40,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--navy);
+    color:var(--cream);
+    font-family:Arial, Helvetica, sans-serif;
+    line-height:1.55;
+    min-height:100vh;
+  }
+  .serif{font-family:Georgia, 'Times New Roman', serif;font-weight:400}
+
+  /* textura sutil de profundidade — altitude + profundidade */
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(1200px 600px at 85% -10%, rgba(184,146,42,.07), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(184,146,42,.05), transparent 55%);
+  }
+  .wrap{position:relative;z-index:1;max-width:640px;margin:0 auto;padding:0 22px 60px}
+
+  /* ============ HEADER ============ */
+  header{padding:28px 0 0;display:flex;align-items:baseline;justify-content:space-between}
+  .wordmark{font-family:Georgia,serif;font-size:20px;letter-spacing:.42em;color:var(--cream)}
+  .wordmark span{color:var(--gold)}
+  .tag{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--stone)}
+
+  /* ============ TELAS ============ */
+  .screen{display:none;animation:rise .5s ease both}
+  .screen.active{display:block}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  /* ---- Capa ---- */
+  .hero{padding:64px 0 40px}
+  .kicker{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+  .kicker::before{content:'';display:inline-block;width:28px;height:1px;background:var(--gold);vertical-align:middle;margin-right:12px}
+  h1{font-family:Georgia,serif;font-weight:400;font-size:clamp(30px,7vw,42px);line-height:1.18;margin-bottom:22px}
+  h1 em{font-style:italic;color:var(--gold)}
+  .lead{color:rgba(245,240,232,.72);font-size:16px;max-width:52ch;margin-bottom:14px}
+  .meta-row{display:flex;gap:26px;margin:34px 0 40px;border-top:1px solid var(--cream-line);border-bottom:1px solid var(--cream-line);padding:16px 0}
+  .meta-row div{font-size:12px;letter-spacing:.06em;color:var(--stone);text-transform:uppercase}
+  .meta-row strong{display:block;font-family:Georgia,serif;font-size:22px;color:var(--cream);letter-spacing:0;text-transform:none;margin-bottom:2px}
+
+  /* ---- Botões ---- */
+  .btn{
+    display:inline-block;width:100%;text-align:center;cursor:pointer;border:none;
+    background:var(--gold);color:var(--navy);font-family:Arial,sans-serif;
+    font-size:14px;font-weight:bold;letter-spacing:.14em;text-transform:uppercase;
+    padding:18px 26px;transition:background .2s, transform .15s;
+  }
+  .btn:hover{background:#c9a238}
+  .btn:active{transform:scale(.985)}
+  .btn.ghost{background:transparent;color:var(--cream);border:1px solid var(--cream-line);font-weight:normal}
+  .btn.ghost:hover{border-color:var(--gold);color:var(--gold)}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+
+  /* ---- Formulário de dados ---- */
+  .form-title{font-family:Georgia,serif;font-size:26px;margin:56px 0 8px}
+  .form-sub{color:var(--stone);font-size:14px;margin-bottom:32px}
+  .field{margin-bottom:24px}
+  label{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:9px}
+  input[type=text],input[type=tel],select{
+    width:100%;background:transparent;border:none;border-bottom:1px solid var(--cream-line);
+    color:var(--cream);font-family:Georgia,serif;font-size:19px;padding:10px 2px;border-radius:0;
+    transition:border-color .2s;appearance:none;-webkit-appearance:none;
+  }
+  select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);
+    background-position:calc(100% - 16px) 55%,calc(100% - 10px) 55%;background-size:6px 6px;background-repeat:no-repeat}
+  select option{background:var(--navy);color:var(--cream)}
+  input:focus,select:focus{outline:none;border-bottom-color:var(--gold)}
+  ::placeholder{color:rgba(107,99,89,.7)}
+  .err{color:#d9a441;font-size:12px;margin-top:6px;display:none}
+
+  /* ---- Quiz ---- */
+  .progress-shell{margin:44px 0 10px}
+  .progress-label{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--stone);margin-bottom:8px}
+  .progress-label b{color:var(--gold);font-weight:normal}
+  .bar{height:2px;background:var(--cream-line)}
+  .bar i{display:block;height:100%;background:var(--gold);width:0%;transition:width .4s ease}
+  .gear-tag{font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin:34px 0 12px}
+  .q-num{font-family:Georgia,serif;font-size:15px;color:var(--stone);font-style:italic;margin-bottom:6px}
+  .q-text{font-family:Georgia,serif;font-size:clamp(21px,5.4vw,26px);line-height:1.32;margin-bottom:28px}
+  .opts{display:flex;flex-direction:column;gap:12px}
+  .opt{
+    border:1px solid var(--cream-line);padding:16px 18px;cursor:pointer;
+    font-size:15px;color:rgba(245,240,232,.85);line-height:1.45;
+    transition:border-color .2s, background .2s;position:relative;
+  }
+  .opt:hover{border-color:rgba(184,146,42,.55)}
+  .opt.sel{border-color:var(--gold);background:rgba(184,146,42,.08)}
+  .opt.sel::after{content:'—';position:absolute;right:16px;top:14px;color:var(--gold);font-family:Georgia,serif}
+  .nav-row{display:flex;gap:12px;margin-top:34px}
+  .nav-row .btn{flex:1}
+  .nav-row .back{flex:0 0 auto;width:auto;padding:18px 22px}
+
+  /* ---- Loading ---- */
+  .loading{padding:110px 0;text-align:center}
+  .loading .serif{font-size:24px;margin-bottom:14px}
+  .loading p{color:var(--stone);font-size:14px}
+  .pulse-line{width:60px;height:1px;background:var(--gold);margin:28px auto 0;animation:pulse 1.2s ease infinite}
+  @keyframes pulse{0%,100%{opacity:.25;transform:scaleX(.6)}50%{opacity:1;transform:scaleX(1)}}
+
+  /* ---- Resultado ---- */
+  .result-head{padding:52px 0 8px}
+  .arch-label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--stone);margin-bottom:14px}
+  .arch-name{font-family:Georgia,serif;font-size:clamp(28px,7vw,38px);line-height:1.2;color:var(--gold);margin-bottom:16px}
+  .arch-desc{color:rgba(245,240,232,.78);font-size:16px;max-width:56ch}
+
+  .score-block{margin:44px 0;border:1px solid var(--cream-line);padding:26px 22px}
+  .score-title{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:22px}
+  .gear-row{margin-bottom:18px}
+  .gear-row:last-child{margin-bottom:0}
+  .gear-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+  .gear-name{font-family:Georgia,serif;font-size:15px}
+  .gear-score{font-size:12px;color:var(--stone)}
+  .gear-score b{color:var(--cream);font-weight:normal;font-family:Georgia,serif;font-size:15px}
+  .gbar{height:6px;background:rgba(245,240,232,.08);position:relative}
+  .gbar i{display:block;height:100%;width:0;background:var(--gold);transition:width 1s cubic-bezier(.2,.7,.3,1)}
+  .gbar.critica i{background:var(--stone)}
+  .gear-status{font-size:10px;letter-spacing:.14em;text-transform:uppercase;margin-top:5px;color:var(--stone)}
+  .gear-status.critica{color:#c98f3d}
+  .gear-status.operante{color:var(--gold)}
+
+  .total-row{display:flex;align-items:baseline;justify-content:space-between;border-top:1px solid var(--cream-line);margin-top:24px;padding-top:20px}
+  .total-row .lbl{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--stone)}
+  .total-row .val{font-family:Georgia,serif;font-size:34px}
+  .total-row .val small{font-size:16px;color:var(--stone)}
+
+  .cost-block{background:var(--cream);color:var(--navy);padding:32px 26px;margin:0 0 40px}
+  .cost-block .lbl{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold-dark);margin-bottom:12px}
+  .cost-value{font-family:Georgia,serif;font-size:clamp(26px,6.5vw,34px);line-height:1.15;margin-bottom:12px}
+  .cost-block p{font-size:14px;color:var(--stone);max-width:52ch}
+  .cost-block p b{color:var(--navy);font-weight:bold}
+
+  .cta-block{border:1px solid rgba(184,146,42,.4);padding:30px 24px;text-align:center}
+  .cta-block .serif{font-size:22px;margin-bottom:10px}
+  .cta-block p{color:var(--stone);font-size:14px;margin-bottom:24px;max-width:46ch;margin-left:auto;margin-right:auto}
+
+  footer{margin-top:70px;border-top:1px solid var(--cream-line);padding-top:20px;display:flex;justify-content:space-between;align-items:baseline}
+  footer .fm{font-family:Georgia,serif;letter-spacing:.36em;font-size:12px;color:var(--stone)}
+  footer .ft{font-family:Georgia,serif;font-style:italic;font-size:12px;color:var(--gold-dark)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="wordmark">ALTUM<span>.</span></div>
+    <div class="tag">Ecossistema Empresarial</div>
+  </header>
+
+  <!-- ============ TELA 1: CAPA ============ -->
+  <section class="screen active" id="s-capa">
+    <div class="hero">
+      <div class="kicker">Diagnóstico ICP 360º</div>
+      <h1>Onde o seu filtro <em>vaza</em> — e quanto isso custa por ano.</h1>
+      <p class="lead">15 perguntas sobre as 5 Engrenagens do Sistema ICP 360º. No final, você recebe seu score por engrenagem, seu arquétipo e uma estimativa do custo anual do cliente errado na sua operação.</p>
+      <div class="meta-row">
+        <div><strong>5</strong>minutos</div>
+        <div><strong>15</strong>perguntas</div>
+        <div><strong>5</strong>engrenagens</div>
+      </div>
+      <button class="btn" onclick="go('s-dados')">Iniciar diagnóstico</button>
+      <p style="margin-top:16px;font-size:12px;color:var(--stone);text-align:center">Responda com honestidade. Diagnóstico lisonjeiro não destrava teto.</p>
+    </div>
+  </section>
+
+  <!-- ============ TELA 2: DADOS ============ -->
+  <section class="screen" id="s-dados">
+    <h2 class="form-title serif">Antes de começar</h2>
+    <p class="form-sub">Seus dados servem para gerar e registrar o seu diagnóstico.</p>
+
+    <div class="field">
+      <label for="f-nome">Nome completo</label>
+      <input type="text" id="f-nome" placeholder="Seu nome" autocomplete="name">
+      <div class="err" id="e-nome">Informe seu nome.</div>
+    </div>
+    <div class="field">
+      <label for="f-zap">WhatsApp</label>
+      <input type="tel" id="f-zap" placeholder="(61) 99999-9999" autocomplete="tel" inputmode="tel">
+      <div class="err" id="e-zap">Informe um WhatsApp válido com DDD.</div>
+    </div>
+    <div class="field">
+      <label for="f-emp">Empresa</label>
+      <input type="text" id="f-emp" placeholder="Nome da sua empresa" autocomplete="organization">
+      <div class="err" id="e-emp">Informe o nome da empresa.</div>
+    </div>
+    <div class="field">
+      <label for="f-fat">Faturamento anual</label>
+      <select id="f-fat">
+        <option value="">Selecione a faixa</option>
+        <option value="350000">Até R$500 mil</option>
+        <option value="750000">R$500 mil a R$1 milhão</option>
+        <option value="2000000">R$1 a R$3 milhões</option>
+        <option value="4000000">R$3 a R$5 milhões</option>
+        <option value="7500000">R$5 a R$10 milhões</option>
+        <option value="15000000">Acima de R$10 milhões</option>
+      </select>
+      <div class="err" id="e-fat">Selecione uma faixa.</div>
+    </div>
+    <div class="field">
+      <label for="f-tempo">Tempo de operação</label>
+      <select id="f-tempo">
+        <option value="">Selecione</option>
+        <option>Menos de 2 anos</option>
+        <option>2 a 5 anos</option>
+        <option>5 a 10 anos</option>
+        <option>Mais de 10 anos</option>
+      </select>
+      <div class="err" id="e-tempo">Selecione uma opção.</div>
+    </div>
+
+    <button class="btn" style="margin-top:14px" onclick="validarDados()">Começar as 15 perguntas</button>
+  </section>
+
+  <!-- ============ TELA 3: QUIZ ============ -->
+  <section class="screen" id="s-quiz">
+    <div class="progress-shell">
+      <div class="progress-label"><span id="p-gear-lbl"></span><b id="p-count"></b></div>
+      <div class="bar"><i id="p-bar"></i></div>
+    </div>
+    <div class="gear-tag" id="q-gear"></div>
+    <div class="q-num" id="q-num"></div>
+    <div class="q-text serif" id="q-text"></div>
+    <div class="opts" id="q-opts"></div>
+    <div class="nav-row">
+      <button class="btn ghost back" id="btn-back" onclick="voltar()">←</button>
+      <button class="btn" id="btn-next" onclick="avancar()" disabled>Próxima</button>
+    </div>
+  </section>
+
+  <!-- ============ TELA 4: LOADING ============ -->
+  <section class="screen" id="s-loading">
+    <div class="loading">
+      <div class="serif">Calculando seu diagnóstico</div>
+      <p>Cruzando suas respostas com as 5 Engrenagens…</p>
+      <div class="pulse-line"></div>
+    </div>
+  </section>
+
+  <!-- ============ TELA 5: RESULTADO ============ -->
+  <section class="screen" id="s-result">
+    <div class="result-head">
+      <div class="arch-label">Seu arquétipo dominante</div>
+      <div class="arch-name serif" id="r-arch"></div>
+      <p class="arch-desc" id="r-arch-desc"></p>
+    </div>
+
+    <div class="score-block">
+      <div class="score-title">Score por engrenagem</div>
+      <div id="r-gears"></div>
+      <div class="total-row">
+        <span class="lbl">Score total</span>
+        <span class="val" id="r-total"></span>
+      </div>
+    </div>
+
+    <div class="cost-block">
+      <div class="lbl">Custo estimado do teto atual</div>
+      <div class="cost-value" id="r-cost"></div>
+      <p>Estimativa anual de crescimento não capturado, com base no seu faturamento e nas engrenagens em falha. <b>Não é o quanto você perde de caixa — é o quanto você deixa de crescer.</b></p>
+    </div>
+
+    <div class="cta-block">
+      <div class="serif">A leitura individual deste diagnóstico é a sua sessão estratégica.</div>
+      <p>Vamos destrinchar suas engrenagens em falha e mapear o caminho para destravar o teto — engrenagem por engrenagem.</p>
+      <a class="btn" id="r-cta" href="#" target="_blank" rel="noopener">Agendar leitura do meu diagnóstico</a>
+    </div>
+
+    <footer>
+      <span class="fm">ALTUM</span>
+      <span class="ft">Elevação que gera legado.</span>
+    </footer>
+  </section>
+
+</div>
+
+<script>
+/* ================= CONFIG — EDITE AQUI ================= */
+const CONFIG = {
+  // URL do Web App do Google Apps Script (passo a passo no README)
+  webhookURL: "https://script.google.com/macros/s/AKfycbxw92n9PSGsM7sQvZAW-rgsgQYGyCPB_HSmdZykaTzrfr7mGjVdaMQmhnZyN4_IQeQjDg/exec",
+  // WhatsApp da equipe ALTUM que recebe os agendamentos (só números, com 55+DDD)
+  whatsapp: "5561991933909"
+};
+
+/* ================= DADOS DO QUIZ ================= */
+const GEARS = [
+  "O Retrato do Cliente Certo",
+  "A Dor Específica",
+  "O Rastro do Cliente",
+  "O Filtro Ativo",
+  "O Ciclo de Retenção"
+];
+
+const QUESTIONS = [
+ // Engrenagem 1
+ {g:0,t:"Se eu te pedisse agora para descrever seu cliente ideal, você diria:",o:[
+  "“Qualquer empresa ou pessoa que precise do que eu vendo.”",
+  "Um perfil demográfico: idade, porte, segmento, região.",
+  "Perfil + a dor principal que ele carrega.",
+  "Perfil, dor e padrão de comportamento na decisão de compra — documentado por escrito."]},
+ {g:0,t:"Seus 3 melhores clientes atuais — os que pagam bem, ficam e indicam:",o:[
+  "Não sei dizer quem são os 3 melhores.",
+  "Sei quem são, mas nunca analisei o que têm em comum.",
+  "Sei o que têm em comum, mas está só na minha cabeça.",
+  "Já mapeei o padrão deles e uso isso para orientar prospecção."]},
+ {g:0,t:"A última vez que você revisou quem é seu cliente ideal foi:",o:[
+  "Nunca fiz esse exercício formalmente.",
+  "Quando abri a empresa — e nunca mais.",
+  "Há mais de um ano.",
+  "Nos últimos 12 meses, com dados reais da carteira."]},
+ // Engrenagem 2
+ {g:1,t:"A dor que você comunica hoje no seu marketing e nas suas vendas:",o:[
+  "Não comunico dor — falo do produto/serviço e seus benefícios.",
+  "Comunico uma dor genérica que qualquer concorrente também usa.",
+  "Comunico uma dor específica, mas nunca validei com clientes reais.",
+  "Comunico uma dor que meus clientes confirmam com “como você sabia?”"]},
+ {g:1,t:"Quando um cliente ideal descreve o problema dele, você:",o:[
+  "Nunca perguntei a fundo — vendo com base no que eu acho que ele precisa.",
+  "Conheço o problema superficial, o de primeiro nível.",
+  "Conheço camadas mais profundas, mas por intuição, sem registro.",
+  "Tenho as dores de 2º e 3º nível documentadas, extraídas de conversas reais."]},
+ {g:1,t:"Na hora de fechar, sua venda é decidida principalmente por:",o:[
+  "Preço — quase sempre preciso dar desconto.",
+  "Relacionamento — compram porque confiam em mim, não na solução.",
+  "Mistura de preço e percepção de valor, varia por cliente.",
+  "Especificidade — o cliente sente que só eu entendo o problema dele."]},
+ // Engrenagem 3
+ {g:2,t:"Dos seus últimos 10 bons clientes, você sabe dizer por qual canal cada um chegou?",o:[
+  "Não faço ideia — não registro origem.",
+  "Sei de alguns, por memória.",
+  "Sei da maioria, mas não uso isso para decidir investimento.",
+  "Sei de todos, registrado, e concentro esforço nos 2–3 canais que geram os melhores."]},
+ {g:2,t:"Você sabe o que dispara a decisão de compra do seu cliente ideal — o evento que o faz procurar solução?",o:[
+  "Nunca pensei nisso.",
+  "Tenho hipóteses, nunca validei.",
+  "Sei para parte da carteira.",
+  "Sei com clareza e uso esse gatilho na comunicação e na abordagem."]},
+ {g:2,t:"Sua presença em canais de aquisição hoje é:",o:[
+  "Estou em todos os canais que consigo — quanto mais, melhor.",
+  "Estou em vários, sem saber qual traz retorno real.",
+  "Concentro em poucos, mas por conveniência, não por dado.",
+  "Concentro nos canais onde meus melhores clientes comprovadamente estão."]},
+ // Engrenagem 4
+ {g:3,t:"Nos últimos 12 meses, quantos clientes você recusou por estarem fora do perfil?",o:[
+  "Nenhum — cliente pagando é cliente aceito.",
+  "Nenhum, mas me arrependi de ter aceitado alguns.",
+  "Um ou dois, decisão de instinto, sem critério formal.",
+  "Recuso com regularidade, com critérios documentados que a equipe também usa."]},
+ {g:3,t:"Sua equipe comercial (ou você, se vende sozinho) qualifica leads com base em:",o:[
+  "Não qualifica — atende todo mundo que chega.",
+  "Feeling de quem atende.",
+  "Alguns critérios informais, que vivem na cabeça das pessoas.",
+  "Critérios escritos, com sinais positivos e sinais de alerta definidos."]},
+ {g:3,t:"Pense no seu cliente mais desgastante dos últimos 6 meses. Ele entrou porque:",o:[
+  "Precisávamos do faturamento — dinheiro na mão é oportunidade.",
+  "Não percebi os sinais de alerta na hora.",
+  "Percebi os sinais, mas aceitei mesmo assim.",
+  "Não tenho cliente desgastante relevante hoje — o filtro segura na porta."]},
+ // Engrenagem 5
+ {g:4,t:"Quando um bom cliente renova ou recompra, isso acontece porque:",o:[
+  "Ofereço desconto ou condição especial para segurar.",
+  "Inércia — ele fica porque trocar dá trabalho.",
+  "Está satisfeito, mas eu não saberia dizer exatamente o porquê.",
+  "A experiência de estar comigo supera qualquer alternativa — e ele verbaliza isso."]},
+ {g:4,t:"Se seu melhor cliente saísse amanhã, o que ele perderia de concreto além do serviço em si?",o:[
+  "Nada que outro fornecedor não ofereça.",
+  "O relacionamento comigo pessoalmente.",
+  "Algumas conveniências acumuladas: histórico, processo ajustado.",
+  "Valor real acumulado: dados, resultados compostos, acesso, integração."]},
+ {g:4,t:"Seus clientes indicam novos clientes:",o:[
+  "Raramente ou nunca.",
+  "Às vezes, espontaneamente, sem padrão.",
+  "Com frequência razoável, mas sem processo meu por trás.",
+  "Sistematicamente — indicação é canal ativo e previsível na minha aquisição."]}
+];
+
+const ARCHETYPES = {
+  achismo:{
+    nome:"O Empresário que Segmenta por Achismo",
+    desc:"Você acredita que conhece seu cliente — mas o retrato vive na sua intuição, não em dado documentado. A dor que você comunica poderia estar na boca de dez concorrentes. Enquanto o retrato e a dor específica não saírem da sua cabeça para o papel, cada real investido em aquisição paga o preço da imprecisão."
+  },
+  concorrente:{
+    nome:"O Empresário que Anda Atrás do Mercado",
+    desc:"Você está onde todo mundo está — não onde o seu melhor cliente comprovadamente está. Sem mapear origem, gatilho de compra e padrão de recompra, sua presença em canais é cobertura, não estratégia. Dispersão com visual bonito."
+  },
+  semfiltro:{
+    nome:"O Empresário que Aceita Qualquer Um que Paga",
+    desc:"Dinheiro na mão parece oportunidade — até a soma de retrabalho, energia emocional e cancelamento antecipado transformar faturamento em prejuízo com CPF. Sem critério documentado de entrada, sua carteira cresce contaminada. E carteira contaminada é teto."
+  },
+  fossilizado:{
+    nome:"O Empresário do ICP Fossilizado",
+    desc:"Você já teve clareza sobre o cliente certo — mas parou no tempo. O mercado se moveu, sua carteira mudou, e a retenção passou a depender de desconto e inércia em vez de valor real acumulado. ICP não é definição. É filtro vivo, revisado com dado."
+  }
+};
+
+/* ================= ESTADO ================= */
+let idx = 0;
+const answers = new Array(QUESTIONS.length).fill(null);
+const dados = {};
+
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0});
+}
+
+/* ================= VALIDAÇÃO DADOS ================= */
+function validarDados(){
+  let ok = true;
+  const nome = document.getElementById('f-nome').value.trim();
+  const zap  = document.getElementById('f-zap').value.replace(/\D/g,'');
+  const emp  = document.getElementById('f-emp').value.trim();
+  const fat  = document.getElementById('f-fat');
+  const tempo= document.getElementById('f-tempo').value;
+
+  const show=(id,cond)=>{document.getElementById(id).style.display = cond?'block':'none'; if(cond) ok=false;};
+  show('e-nome', nome.length<3);
+  show('e-zap', zap.length<10);
+  show('e-emp', emp.length<2);
+  show('e-fat', !fat.value);
+  show('e-tempo', !tempo);
+  if(!ok) return;
+
+  dados.nome = nome;
+  dados.whatsapp = zap;
+  dados.empresa = emp;
+  dados.fatLabel = fat.options[fat.selectedIndex].text;
+  dados.fatMid = parseInt(fat.value,10);
+  dados.tempo = tempo;
+
+  idx = 0;
+  render();
+  go('s-quiz');
+}
+
+/* ================= RENDER QUIZ ================= */
+function render(){
+  const q = QUESTIONS[idx];
+  document.getElementById('p-gear-lbl').textContent = 'Engrenagem ' + (q.g+1) + ' de 5';
+  document.getElementById('p-count').textContent = (idx+1) + ' / ' + QUESTIONS.length;
+  document.getElementById('p-bar').style.width = ((idx)/QUESTIONS.length*100) + '%';
+  document.getElementById('q-gear').textContent = GEARS[q.g];
+  document.getElementById('q-num').textContent = 'Pergunta ' + (idx+1);
+  document.getElementById('q-text').textContent = q.t;
+
+  const box = document.getElementById('q-opts');
+  box.innerHTML = '';
+  q.o.forEach((opt,i)=>{
+    const d = document.createElement('div');
+    d.className = 'opt' + (answers[idx]===i ? ' sel':'');
+    d.textContent = opt;
+    d.onclick = ()=>{ answers[idx]=i; render(); document.getElementById('btn-next').disabled=false; };
+    box.appendChild(d);
+  });
+  document.getElementById('btn-next').disabled = answers[idx]===null;
+  document.getElementById('btn-next').textContent = idx===QUESTIONS.length-1 ? 'Ver meu diagnóstico' : 'Próxima';
+  document.getElementById('btn-back').style.visibility = idx===0 ? 'hidden':'visible';
+}
+
+function avancar(){
+  if(answers[idx]===null) return;
+  if(idx < QUESTIONS.length-1){ idx++; render(); window.scrollTo({top:0}); }
+  else finalizar();
+}
+function voltar(){ if(idx>0){ idx--; render(); window.scrollTo({top:0}); } }
+
+/* ================= CÁLCULO E RESULTADO ================= */
+function finalizar(){
+  go('s-loading');
+
+  // scores por engrenagem
+  const gs = [0,0,0,0,0];
+  QUESTIONS.forEach((q,i)=> gs[q.g] += answers[i]);
+  const total = gs.reduce((a,b)=>a+b,0);
+
+  // arquétipo: engrenagem mais fraca
+  const weakest = definirArquetipo(gs);
+  const arch = ARCHETYPES[weakest];
+
+  // custo: fatMid × (45−score)/45 × 0.25, faixa ±20%
+  const base = dados.fatMid * ((45-total)/45) * 0.25;
+  const cMin = Math.round(base*0.8/1000)*1000;
+  const cMax = Math.round(base*1.2/1000)*1000;
+
+  const payload = {
+    timestamp: new Date().toISOString(),
+    nome: dados.nome, whatsapp: dados.whatsapp, empresa: dados.empresa,
+    faturamento: dados.fatLabel, tempo: dados.tempo,
+    e1: gs[0], e2: gs[1], e3: gs[2], e4: gs[3], e5: gs[4],
+    total: total, arquetipo: arch.nome,
+    custoMin: cMin, custoMax: cMax,
+    respostas: answers.join(',')
+  };
+
+  enviar(payload);
+
+  setTimeout(()=>{ mostrarResultado(gs,total,arch,cMin,cMax); go('s-result'); }, 1600);
+}
+
+function definirArquetipo(gs){
+  const map = ['achismo','achismo','concorrente','semfiltro','fossilizado'];
+  const prioridade = [3,0,1,2,4];
+  let weakIdx = prioridade[0];
+  prioridade.forEach(i=>{ if(gs[i] < gs[weakIdx]) weakIdx = i; });
+  return map[weakIdx];
+}
+
+function mostrarResultado(gs,total,arch,cMin,cMax){
+  document.getElementById('r-arch').textContent = arch.nome;
+  document.getElementById('r-arch-desc').textContent = arch.desc;
+
+  const cont = document.getElementById('r-gears');
+  cont.innerHTML = '';
+  gs.forEach((s,i)=>{
+    const status = s<=3 ? 'critica' : s<=6 ? 'fragil' : 'operante';
+    const statusTxt = s<=3 ? 'Crítica' : s<=6 ? 'Frágil' : 'Operante';
+    const row = document.createElement('div');
+    row.className = 'gear-row';
+    row.innerHTML =
+      '<div class="gear-head"><span class="gear-name">'+(i+1)+'. '+GEARS[i]+'</span>'+
+      '<span class="gear-score"><b>'+s+'</b> / 9</span></div>'+
+      '<div class="gbar '+status+'"><i data-w="'+(s/9*100)+'"></i></div>'+
+      '<div class="gear-status '+status+'">'+statusTxt+'</div>';
+    cont.appendChild(row);
+  });
+  document.getElementById('r-total').innerHTML = total + '<small> / 45</small>';
+  document.getElementById('r-cost').textContent =
+    'R$ ' + fmt(cMin) + ' a R$ ' + fmt(cMax) + ' / ano';
+
+  // CTA WhatsApp com contexto pré-preenchido
+  const msg = encodeURIComponent(
+    'Olá! Acabei de fazer o Diagnóstico ICP 360º.\n' +
+    'Nome: ' + dados.nome + ' — ' + dados.empresa + '\n' +
+    'Arquétipo: ' + arch.nome + '\n' +
+    'Score: ' + total + '/45\n' +
+    'Quero agendar a leitura do meu diagnóstico.'
+  );
+  document.getElementById('r-cta').href = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + msg;
+
+  // anima barras após render
+  requestAnimationFrame(()=>{ setTimeout(()=>{
+    document.querySelectorAll('.gbar i').forEach(b=> b.style.width = b.dataset.w+'%');
+  },80); });
+}
+
+function fmt(n){ return n.toLocaleString('pt-BR'); }
+
+/* ================= ENVIO ================= */
+function enviar(payload){
+  if(!CONFIG.webhookURL || CONFIG.webhookURL.indexOf('COLE_AQUI')===0) return;
+  try{
+    fetch(CONFIG.webhookURL, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify(payload)
+    });
+  }catch(e){ /* silencioso — não bloqueia a experiência do aluno */ }
+}
+</script>
+</body>
+</html>
