@@ -416,6 +416,21 @@ const ARCHETYPES = {
 /* ================= ESTADO ================= */
 let idx = 0;
 const answers = new Array(QUESTIONS.length).fill(null);
+
+/* ===== Randomização (só visual) =====
+   Perguntas e alternativas aparecem em ordem aleatória por sessão,
+   mas answers[] e o payload permanecem na ordem canônica
+   (pergunta 1-15, valor 0-3 original) para manter comparabilidade. */
+function embaralhar(a){
+  const x = a.slice();
+  for(let i = x.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [x[i], x[j]] = [x[j], x[i]];
+  }
+  return x;
+}
+const ORDEM = embaralhar(QUESTIONS.map((_, i) => i));
+const ORDEM_OPTS = QUESTIONS.map(() => embaralhar([0, 1, 2, 3]));
 const dados = {};
 
 function go(id){
@@ -455,30 +470,31 @@ function validarDados(){
 
 /* ================= RENDER QUIZ ================= */
 function render(){
-  const q = QUESTIONS[idx];
-  document.getElementById('p-gear-lbl').textContent = 'Engrenagem ' + (q.g+1) + ' de 5';
+  const qi = ORDEM[idx];
+  const q = QUESTIONS[qi];
+  document.getElementById('p-gear-lbl').textContent = 'Diagnóstico ICP 360º';
   document.getElementById('p-count').textContent = (idx+1) + ' / ' + QUESTIONS.length;
   document.getElementById('p-bar').style.width = ((idx)/QUESTIONS.length*100) + '%';
-  document.getElementById('q-gear').textContent = GEARS[q.g];
+  document.getElementById('q-gear').style.display = 'none';
   document.getElementById('q-num').textContent = 'Pergunta ' + (idx+1);
   document.getElementById('q-text').textContent = q.t;
 
   const box = document.getElementById('q-opts');
   box.innerHTML = '';
-  q.o.forEach((opt,i)=>{
+  ORDEM_OPTS[qi].forEach((valor)=>{
     const d = document.createElement('div');
-    d.className = 'opt' + (answers[idx]===i ? ' sel':'');
-    d.textContent = opt;
-    d.onclick = ()=>{ answers[idx]=i; render(); document.getElementById('btn-next').disabled=false; };
+    d.className = 'opt' + (answers[qi]===valor ? ' sel':'');
+    d.textContent = q.o[valor];
+    d.onclick = ()=>{ answers[qi]=valor; render(); document.getElementById('btn-next').disabled=false; };
     box.appendChild(d);
   });
-  document.getElementById('btn-next').disabled = answers[idx]===null;
+  document.getElementById('btn-next').disabled = answers[qi]===null;
   document.getElementById('btn-next').textContent = idx===QUESTIONS.length-1 ? 'Ver meu diagnóstico' : 'Próxima';
   document.getElementById('btn-back').style.visibility = idx===0 ? 'hidden':'visible';
 }
 
 function avancar(){
-  if(answers[idx]===null) return;
+  if(answers[ORDEM[idx]]===null) return;
   if(idx < QUESTIONS.length-1){ idx++; render(); window.scrollTo({top:0}); }
   else finalizar();
 }
