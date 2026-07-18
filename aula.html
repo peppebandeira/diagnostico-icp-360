@@ -83,8 +83,10 @@
   /* ====== HERO ====== */
   .hero{position:relative;padding:170px 0 90px;overflow:hidden;}
   .hero-grid{max-width:1160px;margin:0 auto;padding:0 26px;
-    display:grid;grid-template-columns:1.02fr .98fr;gap:20px;align-items:center;}
-  .hero-copy{position:relative;z-index:3;}
+    display:grid;grid-template-columns:1.02fr .98fr;column-gap:40px;align-items:center;
+    grid-template-areas:"copy photo" "actions photo";}
+  .hero-copy{position:relative;z-index:3;grid-area:copy;}
+  .hero-actions{position:relative;z-index:3;grid-area:actions;}
   .hero-copy .eyebrow{display:block;margin-bottom:26px;}
   .hero h1{font-family:Georgia,serif;font-size:clamp(40px,6vw,74px);line-height:1.04;
     color:var(--cream);letter-spacing:.01em;margin-bottom:24px;text-shadow:0 2px 30px rgba(0,0,0,.5);}
@@ -102,7 +104,7 @@
     box-shadow:0 0 10px var(--gold);flex-shrink:0;}
 
   /* foto em halo de luz */
-  .hero-photo{position:relative;height:640px;display:flex;align-items:flex-end;justify-content:center;z-index:2;}
+  .hero-photo{position:relative;height:640px;display:flex;align-items:flex-end;justify-content:center;z-index:2;grid-area:photo;}
   .hero-photo .halo{position:absolute;top:50%;left:50%;width:560px;height:560px;
     transform:translate(-50%,-52%);border-radius:50%;
     background:radial-gradient(circle, rgba(184,146,42,.34), rgba(184,146,42,.10) 42%, transparent 66%);
@@ -116,12 +118,12 @@
     background:linear-gradient(180deg,transparent,var(--navy-deep) 88%);}
 
   @media(max-width:940px){
-    .hero-grid{grid-template-columns:1fr;}
+    .hero-grid{grid-template-columns:1fr;grid-template-areas:"copy" "photo" "actions";}
     .hero-copy{text-align:center;}
-    .hero-copy .eyebrow,.hero-cta-row{align-items:center;}
+    .hero-actions{text-align:center;margin-top:26px;}
+    .hero-cta-row{align-items:center;}
     .hero .sub{margin-left:auto;margin-right:auto;}
     .hero-meta{align-items:center;}
-    .hero-cta-row{align-items:center;}
     .hero-photo{height:460px;margin-top:24px;}
     .hero-photo .halo{width:400px;height:400px;}
     .hero-photo .ring{width:320px;height:320px;}
@@ -288,6 +290,14 @@
     <div class="hero-copy">
       <h1>O cliente <em>certo</em> muda tudo!</h1>
       <p class="sub">Você não tem problema de cliente. Você tem problema de filtro. O Sistema ICP 360º para identificar, filtrar e reter apenas os clientes que valem a pena.</p>
+    </div>
+    <div class="hero-photo">
+      <div class="halo"></div>
+      <div class="ring"></div>
+      <img src="Giuseppe.png" alt="Giuseppe Bandeira">
+      <div class="floor"></div>
+    </div>
+    <div class="hero-actions">
       <div class="hero-cta-row">
         <a href="#inscricao" class="btn-gold">Garantir minha vaga
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
@@ -298,12 +308,6 @@
         <div class="i"><span></span> Gratuita — sem custo de entrada</div>
         <div class="i"><span></span> Acesso direto à comunidade da turma no WhatsApp</div>
       </div>
-    </div>
-    <div class="hero-photo">
-      <div class="halo"></div>
-      <div class="ring"></div>
-      <img src="Giuseppe.png" alt="Giuseppe Bandeira">
-      <div class="floor"></div>
     </div>
   </div>
 </section>
