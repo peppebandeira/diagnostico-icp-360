@@ -140,12 +140,9 @@
   .about .col .tag{display:block;font-family:Arial,sans-serif;font-weight:700;font-size:11px;
     letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
   .about strong{color:var(--cream);font-weight:700;}
-  .emblem{position:relative;height:340px;display:flex;align-items:center;justify-content:center;}
-  .emblem .glow{position:absolute;width:300px;height:300px;border-radius:50%;
-    background:radial-gradient(circle,rgba(184,146,42,.3),transparent 62%);filter:blur(4px);}
-  .emblem svg{position:relative;z-index:2;width:260px;height:260px;}
-  .emblem .cap{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
-    font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:14px;letter-spacing:.05em;z-index:3;}
+  .emblem{position:relative;min-height:340px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;}
+  .emblem .compass{width:280px;height:auto;filter:drop-shadow(0 16px 38px rgba(0,0,0,.55));}
+  .emblem .cap{font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:17px;letter-spacing:.06em;}
   @media(max-width:900px){
     .about-grid{grid-template-columns:1fr;text-align:center;gap:34px;}
     .about h2{font-size:38px;}
@@ -344,19 +341,7 @@
         <p style="margin-top:20px;"><span class="tag">Sobre a aula</span>Todo negócio que trava num teto tem a mesma origem silenciosa: <strong>carteira contaminada</strong>. Clientes que nunca deveriam ter entrado consumindo o que deveria virar crescimento.</p>
       </div>
       <div class="emblem">
-        <div class="glow"></div>
-        <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="100" cy="100" r="78" stroke="#B8922A" stroke-opacity=".5" stroke-width="1"/>
-          <circle cx="100" cy="100" r="58" stroke="#D4AF47" stroke-opacity=".7" stroke-width="1"/>
-          <circle cx="100" cy="100" r="34" stroke="#B8922A" stroke-opacity=".9" stroke-width="1.4"/>
-          <g stroke="#D4AF47" stroke-width="1.2" stroke-opacity=".85">
-            <line x1="100" y1="8" x2="100" y2="30"/><line x1="100" y1="170" x2="100" y2="192"/>
-            <line x1="8" y1="100" x2="30" y2="100"/><line x1="170" y1="100" x2="192" y2="100"/>
-            <line x1="35" y1="35" x2="50" y2="50"/><line x1="150" y1="150" x2="165" y2="165"/>
-            <line x1="165" y1="35" x2="150" y2="50"/><line x1="50" y1="150" x2="35" y2="165"/>
-          </g>
-          <circle cx="100" cy="100" r="6" fill="#D4AF47"/>
-        </svg>
+        <img src="bussola.png" alt="Bússola ICP 360º" class="compass">
         <div class="cap">ICP 360º</div>
       </div>
       <div class="col">
