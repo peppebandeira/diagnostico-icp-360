@@ -520,7 +520,6 @@
 </div>
 
 <script>
-const GRUPO_WHATSAPP = "https://chat.whatsapp.com/GQt2PXsufDcJPWX6VyiGUk";
 document.getElementById('form-inscricao').addEventListener('submit', function(e){
   e.preventDefault();
   const nome  = document.getElementById('nome').value.trim();
@@ -530,10 +529,7 @@ document.getElementById('form-inscricao').addEventListener('submit', function(e)
   const fat   = document.getElementById('fat').value;
   const tempo = document.getElementById('tempo').value;
   if(nome.length<3 || whats.length<10 || !email.includes('@') || emp.length<2 || !fat || !tempo) return;
-  document.getElementById('form-area').style.display='none';
-  const t=document.getElementById('thanks'); t.classList.add('show');
-  document.getElementById('btn-grupo').href=GRUPO_WHATSAPP;
-  window.open(GRUPO_WHATSAPP,'_blank');
+  window.location.href = '/obrigado';
 });
 </script>
 </body>
