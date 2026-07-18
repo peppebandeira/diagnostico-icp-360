@@ -155,37 +155,13 @@
   .identify .sub{font-family:Arial,sans-serif;font-size:12px;letter-spacing:.24em;
     text-transform:uppercase;color:var(--stone);margin-bottom:54px;}
 
-  .constellation{position:relative;max-width:980px;margin:0 auto;min-height:440px;}
-  .constellation .center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:230px;height:340px;z-index:2;display:flex;align-items:center;justify-content:center;}
-  .constellation .center .cglow{position:absolute;width:280px;height:280px;border-radius:50%;
-    background:radial-gradient(circle,rgba(184,146,42,.28),transparent 60%);filter:blur(8px);}
-  .constellation .center .disc{position:relative;z-index:2;width:190px;height:190px;border-radius:50%;
-    border:1px solid rgba(184,146,42,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:radial-gradient(circle at 50% 35%, rgba(184,146,42,.14), rgba(10,22,40,.6));
-    box-shadow:0 0 60px rgba(184,146,42,.2), inset 0 0 40px rgba(184,146,42,.1);}
-  .constellation .center .disc .n{font-family:Georgia,serif;font-size:40px;color:var(--gold-bright);line-height:1;}
-  .constellation .center .disc .l{font-family:Arial,sans-serif;font-size:10px;letter-spacing:.24em;
-    text-transform:uppercase;color:var(--cream);margin-top:8px;}
-  .constellation svg.links{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;}
-  .constellation svg.links path{fill:none;stroke:rgba(184,146,42,.45);stroke-width:1;}
-  .constellation svg.links circle{fill:var(--gold-bright);}
-
-  .pt{position:absolute;width:210px;font-size:13px;line-height:1.45;color:rgba(245,240,232,.86);z-index:3;}
-  .pt.r{text-align:left;}
-  .pt.l{text-align:right;}
-  /* posições esquerda */
-  .pt.l1{top:6%;left:0;}
-  .pt.l2{top:28%;left:-1%;}
-  .pt.l3{top:50%;left:-2%;}
-  .pt.l4{top:72%;left:-1%;}
-  .pt.l5{top:92%;left:2%;}
-  /* posições direita */
-  .pt.r1{top:6%;right:0;}
-  .pt.r2{top:28%;right:-1%;}
-  .pt.r3{top:50%;right:-2%;}
-  .pt.r4{top:72%;right:-1%;}
-  .pt.r5{top:92%;right:2%;}
+  .constellation{position:relative;max-width:1040px;margin:0 auto;}
+  .constellation .links{display:block;width:100%;height:auto;overflow:visible;position:relative;z-index:1;}
+  .constellation .links path{fill:none;stroke:rgba(184,146,42,.5);stroke-width:1;}
+  .constellation .links circle{fill:var(--gold-bright);}
+  .constellation .links text{fill:rgba(245,240,232,.9);font-family:Arial,Helvetica,sans-serif;font-size:15px;}
+  .constellation .cphoto{position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+    width:37%;max-width:400px;height:auto;z-index:2;filter:drop-shadow(0 24px 54px rgba(0,0,0,.6));}
 
   .constellation-mobile{display:none;}
   @media(max-width:860px){
@@ -358,37 +334,43 @@
     <div class="sub">o cliente que está drenando o seu crescimento</div>
 
     <div class="constellation">
-      <svg class="links" viewBox="0 0 1080 560" preserveAspectRatio="none">
-        <path d="M210,60 C360,80 420,150 470,200"/>
-        <path d="M200,180 C340,190 410,220 470,240"/>
-        <path d="M195,285 C330,285 400,282 470,282"/>
-        <path d="M200,395 C340,380 410,345 470,322"/>
-        <path d="M215,500 C360,470 420,400 470,360"/>
-        <path d="M870,60 C720,80 660,150 610,200"/>
-        <path d="M880,180 C740,190 670,220 610,240"/>
-        <path d="M885,285 C750,285 680,282 610,282"/>
-        <path d="M880,395 C740,380 670,345 610,322"/>
-        <path d="M865,500 C720,470 660,400 610,360"/>
-        <circle cx="210" cy="60" r="3"/><circle cx="200" cy="180" r="3"/><circle cx="195" cy="285" r="3"/><circle cx="200" cy="395" r="3"/><circle cx="215" cy="500" r="3"/>
-        <circle cx="870" cy="60" r="3"/><circle cx="880" cy="180" r="3"/><circle cx="885" cy="285" r="3"/><circle cx="880" cy="395" r="3"/><circle cx="865" cy="500" r="3"/>
+      <svg class="links" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+        <!-- linhas curvas: saem de trás da foto (centro) e terminam no ponto de cada texto -->
+        <path d="M470,300 C395,175 335,110 276,72"/>
+        <path d="M470,300 C400,248 340,205 276,190"/>
+        <path d="M470,300 C415,300 345,300 276,300"/>
+        <path d="M470,300 C400,352 340,395 276,410"/>
+        <path d="M470,300 C395,425 335,490 276,528"/>
+        <path d="M530,300 C605,175 665,110 724,72"/>
+        <path d="M530,300 C600,248 660,205 724,190"/>
+        <path d="M530,300 C585,300 655,300 724,300"/>
+        <path d="M530,300 C600,352 660,395 724,410"/>
+        <path d="M530,300 C605,425 665,490 724,528"/>
+        <!-- pontos finais: exatamente na 1ª linha de cada texto -->
+        <circle cx="276" cy="72" r="3.5"/>
+        <circle cx="276" cy="190" r="3.5"/>
+        <circle cx="276" cy="300" r="3.5"/>
+        <circle cx="276" cy="410" r="3.5"/>
+        <circle cx="276" cy="528" r="3.5"/>
+        <circle cx="724" cy="72" r="3.5"/>
+        <circle cx="724" cy="190" r="3.5"/>
+        <circle cx="724" cy="300" r="3.5"/>
+        <circle cx="724" cy="410" r="3.5"/>
+        <circle cx="724" cy="528" r="3.5"/>
+        <!-- textos esquerda (alinhados à direita, terminam no ponto) -->
+        <text text-anchor="end"><tspan x="264" y="77">Você aceita qualquer cliente</tspan><tspan x="264" y="97">que paga — mesmo vendo os sinais</tspan></text>
+        <text text-anchor="end"><tspan x="264" y="195">Segmenta por achismo, sem</tspan><tspan x="264" y="215">nenhum dado que sustente</tspan></text>
+        <text text-anchor="end"><tspan x="264" y="305">Desconto virou a única</tspan><tspan x="264" y="325">forma de fechar venda</tspan></text>
+        <text text-anchor="end"><tspan x="264" y="415">Marketing falando com todo</tspan><tspan x="264" y="435">mundo — e convertendo ninguém</tspan></text>
+        <text text-anchor="end"><tspan x="264" y="533">ICP definido "de cabeça",</tspan><tspan x="264" y="553">nunca no papel</tspan></text>
+        <!-- textos direita (alinhados à esquerda, começam no ponto) -->
+        <text text-anchor="start"><tspan x="736" y="77">Time drenado por quem</tspan><tspan x="736" y="97">paga pouco e exige muito</tspan></text>
+        <text text-anchor="start"><tspan x="736" y="195">Faturamento que sobe,</tspan><tspan x="736" y="215">mas margem que some</tspan></text>
+        <text text-anchor="start"><tspan x="736" y="305">Clientes que somem e</tspan><tspan x="736" y="325">nunca indicam ninguém</tspan></text>
+        <text text-anchor="start"><tspan x="736" y="415">Retrabalho e desgaste</tspan><tspan x="736" y="435">emocional como rotina</tspan></text>
+        <text text-anchor="start"><tspan x="736" y="533">Crescimento travado</tspan><tspan x="736" y="553">num teto invisível</tspan></text>
       </svg>
-
-      <div class="center">
-        <div class="cglow"></div>
-        <div class="disc"><div class="n">5</div><div class="l">Engrenagens</div></div>
-      </div>
-
-      <div class="pt l l1">Você aceita qualquer cliente que paga — mesmo vendo os sinais</div>
-      <div class="pt l l2">Segmenta por achismo, sem nenhum dado sustentando</div>
-      <div class="pt l l3">Desconto virou a única forma de fechar venda</div>
-      <div class="pt l l4">Marketing falando com todo mundo — e convertendo ninguém</div>
-      <div class="pt l l5">ICP definido "de cabeça", nunca no papel</div>
-
-      <div class="pt r r1">Time drenado por quem paga pouco e exige muito</div>
-      <div class="pt r r2">Faturamento que sobe, mas margem que some</div>
-      <div class="pt r r3">Clientes que somem e nunca indicam ninguém</div>
-      <div class="pt r r4">Retrabalho e desgaste emocional como rotina</div>
-      <div class="pt r r5">Crescimento travado num teto invisível</div>
+      <img class="cphoto" src="sentado.png" alt="Giuseppe Bandeira">
     </div>
 
     <div class="constellation-mobile">
