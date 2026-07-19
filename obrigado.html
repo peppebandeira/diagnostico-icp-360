@@ -89,6 +89,19 @@
   .btn-gold:hover{transform:translateY(-2px);box-shadow:0 14px 54px rgba(184,146,42,.6), inset 0 1px 0 rgba(255,255,255,.5);}
   .btn-gold svg{width:20px;height:20px;fill:currentColor;}
 
+  /* bloco de data/local do evento presencial */
+  .evento-info{display:flex;justify-content:center;flex-wrap:wrap;margin:0 auto 38px;max-width:620px;
+    border:1px solid rgba(184,146,42,.3);border-radius:16px;overflow:hidden;
+    box-shadow:0 20px 50px rgba(0,0,0,.4);}
+  .evento-info>div{flex:1;min-width:150px;padding:20px 22px;text-align:center;border-right:1px solid rgba(184,146,42,.18);}
+  .evento-info>div:last-child{border-right:none;}
+  .ei-l{display:block;font-family:Arial,sans-serif;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:7px;}
+  .ei-v{display:block;font-family:Georgia,serif;font-size:16px;color:var(--cream);line-height:1.35;}
+  @media(max-width:520px){
+    .evento-info>div{flex:1 1 100%;border-right:none;border-bottom:1px solid rgba(184,146,42,.18);}
+    .evento-info>div:last-child{border-bottom:none;}
+  }
+
   .warn{display:flex;align-items:flex-start;gap:10px;justify-content:center;
     margin-top:22px;font-size:13px;color:var(--stone);line-height:1.55;max-width:460px;
     margin-left:auto;margin-right:auto;}
@@ -115,10 +128,16 @@
       <h1>Vaga <em>reservada</em>.</h1>
       <p class="lead">Sua reserva foi registrada. Mas ela ainda não está garantida — falta um único passo, e ele é obrigatório.</p>
 
+      <div class="evento-info">
+        <div><span class="ei-l">Data · hora</span><span class="ei-v">22 de julho · 14h</span></div>
+        <div><span class="ei-l">Local</span><span class="ei-v">Solo Ristorante</span></div>
+        <div><span class="ei-l">Endereço</span><span class="ei-v">CLS 403, Bloco C<br>Asa Sul</span></div>
+      </div>
+
       <div class="step">
         <span class="tag">Passo obrigatório · agora</span>
-        <h2>Entre na comunidade da turma no WhatsApp — é <b>lá que o acesso à aula é liberado</b>.</h2>
-        <p>Todo o material, o link e as instruções da aula são enviados <b>somente dentro do grupo</b>. Quem não entra, não recebe o acesso — e a vaga é liberada para a fila de espera.</p>
+        <h2>Entre na comunidade da turma no WhatsApp — é <b>lá que confirmamos a sua presença</b>.</h2>
+        <p>Os lembretes, orientações e qualquer mudança de última hora do encontro presencial são enviados <b>somente dentro do grupo</b>. Sem entrar, sua presença não é confirmada — e a vaga é liberada para a fila de espera.</p>
         <a class="btn-gold" id="btn-grupo" href="https://chat.whatsapp.com/GQt2PXsufDcJPWX6VyiGUk" rel="noopener" target="_blank">
           Entrar na comunidade da turma
           <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.07-1.33A9.93 9.93 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
@@ -127,7 +146,7 @@
 
       <div class="warn">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-        <span>Sem entrar no grupo, você não recebe o link da aula. Faça isso agora, enquanto está com a página aberta.</span>
+        <span>Sem entrar no grupo, sua presença não é confirmada. Faça isso agora, enquanto está com a página aberta.</span>
       </div>
     </div>
   </main>
