@@ -520,7 +520,8 @@
 </div>
 
 <script>
-document.getElementById('form-inscricao').addEventListener('submit', function(e){
+const API_INSCRICAO = "https://icp-360.vercel.app/api/respostas";
+document.getElementById('form-inscricao').addEventListener('submit', async function(e){
   e.preventDefault();
   const nome  = document.getElementById('nome').value.trim();
   const whats = document.getElementById('whats').value.replace(/\D/g,'');
@@ -528,7 +529,22 @@ document.getElementById('form-inscricao').addEventListener('submit', function(e)
   const emp   = document.getElementById('empresa').value.trim();
   const fat   = document.getElementById('fat').value;
   const tempo = document.getElementById('tempo').value;
+  const indicou = document.getElementById('indicou').value.trim();
   if(nome.length<3 || whats.length<10 || !email.includes('@') || emp.length<2 || !fat || !tempo) return;
+  const btn = e.target.querySelector('button[type="submit"]');
+  if(btn){ btn.disabled = true; btn.style.opacity = '.7'; }
+  const payload = {
+    tipo:'inscricao', origem:'campanha',
+    nome, whatsapp:whats, email, empresa:emp,
+    faturamento:fat, tempo, indicou,
+    timestamp:new Date().toISOString()
+  };
+  try{
+    await fetch(API_INSCRICAO, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload), keepalive:true
+    });
+  }catch(err){ /* não bloqueia o redirecionamento */ }
   window.location.href = '/obrigado';
 });
 </script>
