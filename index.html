@@ -416,6 +416,8 @@ const ARCHETYPES = {
 /* ================= ESTADO ================= */
 let idx = 0;
 const answers = new Array(QUESTIONS.length).fill(null);
+/* rastreio de abandono */
+let iniciouQuiz = false, finalizado = false, ultimoParcialEnviado = -1;
 
 /* ===== Randomização (só visual) =====
    Perguntas e alternativas aparecem em ordem aleatória por sessão,
@@ -464,6 +466,7 @@ function validarDados(){
   dados.tempo = tempo;
 
   idx = 0;
+  iniciouQuiz = true;
   render();
   go('s-quiz');
 }
@@ -502,6 +505,7 @@ function voltar(){ if(idx>0){ idx--; render(); window.scrollTo({top:0}); } }
 
 /* ================= CÁLCULO E RESULTADO ================= */
 function finalizar(){
+  finalizado = true;
   go('s-loading');
 
   // scores por engrenagem
@@ -592,6 +596,29 @@ function enviar(payload){
     });
   }catch(e){ /* silencioso — não bloqueia a experiência do aluno */ }
 }
+
+/* ===== REGISTRO DE ABANDONO ===== */
+function enviarParcial(){
+  if(!iniciouQuiz || finalizado) return;
+  const respondidas = answers.filter(a => a !== null).length;
+  if(respondidas === ultimoParcialEnviado) return;
+  ultimoParcialEnviado = respondidas;
+  const payload = {
+    tipo:'parcial', origem:'quiz',
+    timestamp: new Date().toISOString(),
+    nome: dados.nome, whatsapp: dados.whatsapp, empresa: dados.empresa,
+    faturamento: dados.fatLabel, tempo: dados.tempo,
+    respondidas: respondidas, perguntas: QUESTIONS.length,
+    respostas: answers.map(a => a === null ? '' : a).join(',')
+  };
+  try{
+    const blob = new Blob([JSON.stringify(payload)], {type:'text/plain'});
+    if(navigator.sendBeacon){ navigator.sendBeacon(CONFIG.webhookURL, blob); }
+    else { fetch(CONFIG.webhookURL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload),keepalive:true}); }
+  }catch(e){ /* silencioso */ }
+}
+document.addEventListener('visibilitychange', function(){ if(document.visibilityState === 'hidden') enviarParcial(); });
+window.addEventListener('pagehide', enviarParcial);
 </script>
 </body>
 </html>
