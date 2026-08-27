@@ -302,7 +302,7 @@
         <a href="#inscricao" class="btn-gold">Garantir minha vaga
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <div class="date-badge">30.07 · 14h · <b>Presencial — Solo Ristorante, Asa Sul</b></div>
+        <div class="date-badge">Qui 03.09 · 09h · <b>Presencial — Espaço RC, Asa Sul</b></div>
       </div>
       <div class="hero-meta">
         <div class="i"><span></span> Gratuita — sem custo de entrada</div>
@@ -341,7 +341,6 @@
 
     <div class="constellation">
       <svg class="links" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
-        <!-- linhas curvas: saem de trás da foto (centro) e terminam no ponto de cada texto -->
         <path d="M470,300 C395,175 335,110 276,72"/>
         <path d="M470,300 C400,248 340,205 276,190"/>
         <path d="M470,300 C415,300 345,300 276,300"/>
@@ -352,7 +351,6 @@
         <path d="M530,300 C585,300 655,300 724,300"/>
         <path d="M530,300 C600,352 660,395 724,410"/>
         <path d="M530,300 C605,425 665,490 724,528"/>
-        <!-- pontos finais: exatamente na 1ª linha de cada texto -->
         <circle cx="276" cy="72" r="3.5"/>
         <circle cx="276" cy="190" r="3.5"/>
         <circle cx="276" cy="300" r="3.5"/>
@@ -363,13 +361,11 @@
         <circle cx="724" cy="300" r="3.5"/>
         <circle cx="724" cy="410" r="3.5"/>
         <circle cx="724" cy="528" r="3.5"/>
-        <!-- textos esquerda (alinhados à direita, terminam no ponto) -->
         <text text-anchor="end"><tspan x="264" y="77">Você aceita qualquer cliente</tspan><tspan x="264" y="97">que paga — mesmo vendo os sinais</tspan></text>
         <text text-anchor="end"><tspan x="264" y="195">Segmenta por achismo, sem</tspan><tspan x="264" y="215">nenhum dado que sustente</tspan></text>
         <text text-anchor="end"><tspan x="264" y="305">Desconto virou a única</tspan><tspan x="264" y="325">forma de fechar venda</tspan></text>
         <text text-anchor="end"><tspan x="264" y="415">Marketing falando com todo</tspan><tspan x="264" y="435">mundo — e convertendo ninguém</tspan></text>
         <text text-anchor="end"><tspan x="264" y="533">ICP definido "de cabeça",</tspan><tspan x="264" y="553">nunca no papel</tspan></text>
-        <!-- textos direita (alinhados à esquerda, começam no ponto) -->
         <text text-anchor="start"><tspan x="736" y="77">Time drenado por quem</tspan><tspan x="736" y="97">paga pouco e exige muito</tspan></text>
         <text text-anchor="start"><tspan x="736" y="195">Faturamento que sobe,</tspan><tspan x="736" y="215">mas margem que some</tspan></text>
         <text text-anchor="start"><tspan x="736" y="305">Clientes que somem e</tspan><tspan x="736" y="325">nunca indicam ninguém</tspan></text>
@@ -458,7 +454,7 @@
     <div class="formcard">
       <div id="form-area">
         <h3>Reserve sua vaga gratuita</h3>
-        <p class="fs">Preencha para garantir sua vaga na próxima turma ao vivo.</p>
+        <p class="fs">Preencha para garantir sua vaga no encontro presencial.</p>
         <form id="form-inscricao">
           <div class="field"><label for="nome">Nome completo</label><input type="text" id="nome" placeholder="Seu nome" autocomplete="name" required></div>
           <div class="row2">
@@ -501,7 +497,7 @@
 
       <div class="thanks" id="thanks">
         <div class="tk">Vaga reservada.</div>
-        <p>Falta um passo — e ele é obrigatório: entre agora na comunidade da turma no WhatsApp. É lá que o acesso à aula é liberado.</p>
+        <p>Falta um passo — e ele é obrigatório: entre agora na comunidade da turma no WhatsApp. É lá que confirmamos a sua presença no encontro.</p>
         <a class="btn-gold" id="btn-grupo" href="#" rel="noopener">Entrar na comunidade da turma
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
@@ -521,6 +517,7 @@
 
 <script>
 const API_INSCRICAO = "https://icp-360.vercel.app/api/respostas";
+const EVENTO = "03/09 · 09h · Espaço RC (Bonaparte Hotel) · SHS Q2 Bl J, Asa Sul";
 document.getElementById('form-inscricao').addEventListener('submit', async function(e){
   e.preventDefault();
   const nome  = document.getElementById('nome').value.trim();
@@ -534,7 +531,7 @@ document.getElementById('form-inscricao').addEventListener('submit', async funct
   const btn = e.target.querySelector('button[type="submit"]');
   if(btn){ btn.disabled = true; btn.style.opacity = '.7'; }
   const payload = {
-    tipo:'inscricao', origem:'campanha',
+    tipo:'inscricao', origem:'campanha', evento:EVENTO,
     nome, whatsapp:whats, email, empresa:emp,
     faturamento:fat, tempo, indicou,
     timestamp:new Date().toISOString()
