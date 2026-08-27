@@ -278,10 +278,48 @@
   footer .ft{font-family:Georgia,serif;font-style:italic;color:var(--gold-deep);font-size:13px;margin-bottom:8px;}
   footer p{color:var(--stone);font-size:12px;}
 
-  /* ====== reveal ao rolar (respeitando reduced-motion) ====== */
-  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease;}
+  /* ====== ANIMAÇÃO ====== */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease, transform .8s cubic-bezier(.22,.61,.36,1);}
   .reveal.in{opacity:1;transform:none;}
-  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none;}}
+  /* cascata dentro dos grupos */
+  .method .step:nth-child(2){transition-delay:.09s;}
+  .method .step:nth-child(3){transition-delay:.18s;}
+  .method .step:nth-child(4){transition-delay:.27s;}
+  .method .step:nth-child(5){transition-delay:.36s;}
+  .proof-grid .pc:nth-child(2){transition-delay:.12s;}
+  .about-grid .col:nth-child(3){transition-delay:.1s;}
+
+  /* entrada da hero no carregamento */
+  @keyframes riseIn{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:none;}}
+  @keyframes fadeScaleIn{from{opacity:0;transform:scale(.96) translateY(16px);}to{opacity:1;transform:none;}}
+  .hero h1{animation:riseIn 1s cubic-bezier(.22,.61,.36,1) both;}
+  .hero .sub{animation:riseIn 1s cubic-bezier(.22,.61,.36,1) .14s both;}
+  .hero-actions .hero-cta-row{animation:riseIn 1s cubic-bezier(.22,.61,.36,1) .3s both;}
+  .hero-actions .hero-meta{animation:riseIn 1s cubic-bezier(.22,.61,.36,1) .42s both;}
+  .hero-photo img{animation:fadeScaleIn 1.2s cubic-bezier(.22,.61,.36,1) .1s both;}
+
+  /* respiração do halo e flutuação da bússola */
+  @keyframes haloBreathe{0%,100%{opacity:.68;}50%{opacity:1;}}
+  @keyframes floatY{0%,100%{transform:translateY(0);}50%{transform:translateY(-9px);}}
+  .hero-photo .halo{animation:haloBreathe 6s ease-in-out infinite;}
+  .emblem .compass{animation:floatY 7s ease-in-out infinite;}
+
+  /* traçado dos conectores da constelação ao entrar em tela */
+  .constellation .links path{stroke-dasharray:900;stroke-dashoffset:900;}
+  .constellation.in .links path{animation:drawLine 1.5s ease forwards;}
+  @keyframes drawLine{to{stroke-dashoffset:0;}}
+  .constellation .links circle,.constellation .links text{opacity:0;}
+  .constellation.in .links circle{animation:appear .6s ease 1s forwards;}
+  .constellation.in .links text{animation:appear .7s ease 1.15s forwards;}
+  @keyframes appear{to{opacity:1;}}
+
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    .hero h1,.hero .sub,.hero-actions .hero-cta-row,.hero-actions .hero-meta,.hero-photo img{animation:none;}
+    .hero-photo .halo,.emblem .compass{animation:none;}
+    .constellation .links path{stroke-dashoffset:0;}
+    .constellation .links circle,.constellation .links text{opacity:1;}
+  }
 </style>
 </head>
 <body>
@@ -299,9 +337,8 @@
 <section class="hero">
   <div class="hero-grid">
     <div class="hero-copy">
-      <span class="idx">Encontro presencial · Brasília</span>
       <h1>O cliente <em>certo</em> muda tudo!</h1>
-      <p class="sub">Você não tem problema de cliente. Você tem problema de filtro. O Sistema ICP 360º para identificar, filtrar e reter apenas os clientes que valem a pena.</p>
+      <p class="sub">Você não tem problema de cliente. Você tem problema de filtro. Para identificar, filtrar e reter apenas os clientes que valem a pena.</p>
     </div>
     <div class="hero-photo">
       <div class="halo"></div>
@@ -335,7 +372,6 @@
       </div>
       <div class="emblem reveal">
         <img src="bussola.png" alt="Bússola ICP 360º" class="compass">
-        <div class="cap">ICP 360º</div>
       </div>
       <div class="col reveal">
         <p><span class="tag">O que a aula destrava</span>Tudo que se repete no seu negócio — CAC alto, margem que some, time drenado — é <strong>padrão</strong>, não azar. O ICP 360º é o filtro vivo que corta a origem: você para de vender para todo mundo e passa a atrair só quem <strong>paga bem, fica e indica</strong>.</p>
@@ -347,7 +383,6 @@
 <!-- COMO IDENTIFICAR -->
 <section class="identify">
   <div class="wrap">
-    <div class="kicker">O diagnóstico</div>
     <h2>Como identificar</h2>
     <div class="sub">o cliente que está drenando o seu crescimento</div>
 
@@ -408,7 +443,6 @@
 <section class="system">
   <div class="wrap">
     <div class="system-head">
-      <div class="kicker">O sistema</div>
       <h2>Sistema ICP 360º</h2>
       <p>3 movimentos, 5 engrenagens. Da identificação à retenção, sem pular etapa.</p>
     </div>
@@ -426,7 +460,6 @@
 <section class="proof">
   <div class="wrap">
     <div class="proof-head">
-      <div class="kicker">A prova</div>
       <h2>O resultado de aplicar o sistema em números reais.</h2>
     </div>
     <div class="proof-grid">
@@ -461,7 +494,6 @@
 <section class="final" id="inscricao">
   <div class="final-grid">
     <div class="final-copy">
-      <div class="kicker">Sua vaga</div>
       <h2>O que falta é a sua decisão.</h2>
       <p>Framework, cases e exercício prático: você leva tudo isso na aula. Garanta sua vaga gratuita e entre direto na comunidade da turma no WhatsApp.</p>
     </div>
